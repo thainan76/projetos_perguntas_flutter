@@ -1,6 +1,11 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import './questao.dart';
 import './respostas.dart';
+import './resultado.dart';
+import './questionario.dart';
+
 
 void main() {
   runApp(PerguntasApp());
@@ -9,54 +14,102 @@ void main() {
 class _PerguntaAppState extends State<PerguntasApp> {
 
   var _perguntaSelecionada = 0;
+  var _pontuacaoTotal = 0;
 
-  void _responder(){
+  void _responder(int pontuacao){
     
     setState( () {
       _perguntaSelecionada++;
+      _pontuacaoTotal += pontuacao;
     });
 
     print('Pergunta respondida!');
 
   }
 
+  
 
-  @override
-  Widget build(BuildContext context){
-
-    final List<Map<String, Object>> perguntas = [
+  final _perguntas = const [
       {
         'texto': 'Qual é a sua cor favorita?',
-        'respostas': ['Preto', 'Vermelho', 'Rosa','Azul']
+        'respostas': [
+           {
+             'texto': 'Preto', 'pontuacao': 10
+           },
+           {
+             'texto': 'Vermelho', 'pontuacao': 3
+           },
+           {
+             'texto': 'Roxa', 'pontuacao': 5
+           },
+           {
+             'texto': 'Branco', 'pontuacao': 7
+           } 
+        ]
       },
       {
         'texto': 'Qual é o seu animal favorito?',
-        'respostas': ['Cachorro', 'Gato', 'Macaco','Porco']
+        'respostas': [
+            {
+              'texto': 'Cachorro', 'pontuacao': 10
+            },
+            {
+              'texto': 'Gato', 'pontuacao': 3
+            },
+            {
+              'texto': 'Camelo', 'pontuacao': 5
+            },
+            {
+              'texto': 'Tigre', 'pontuacao': 7
+            } 
+        ]
       },
       {
         'texto': 'Qual é a sua comida favorita?',
-        'respostas': ['Strogonoff', 'Lasanha', 'Pizza','Lanche']
+        'respostas': [
+           {
+             'texto': 'Pizza', 'pontuacao': 10
+           },
+           {
+             'texto': 'Lasanha', 'pontuacao': 3
+           },
+           {
+             'texto': 'Esfiha', 'pontuacao': 5
+           },
+           {
+             'texto': 'Strogonoff', 'pontuacao': 7
+           } 
+        ]
       }
     ];
 
-    List<String> resposta = perguntas[_perguntaSelecionada]['respostas'];
-    //List<Widget> widget = resposta.map((t) => Respostas(t, _responder)).toList();
 
-    /*for(String textRespostas in resposta){
-      widget.add(Respostas(textRespostas, _responder));
-    }  */
+  void _reiniciarQuestionario(){
+    setState((){
+      _perguntaSelecionada = 0;
+      _pontuacaoTotal = 0;
+    });
+  }
+
+  bool get temPerguntaSelecionada {
+    return _perguntaSelecionada < _perguntas.length;
+  }
+
+  @override
+  Widget build(BuildContext context){
 
       return MaterialApp(
         home: Scaffold(
           appBar: AppBar(
             title: Text("Perguntas"),
           ),
-          body: Column(
-            children: <Widget>[
-              Questao(perguntas[_perguntaSelecionada]['texto']),
-              ...resposta.map((t) => Respostas(t, _responder)).toList(),
-           ],
-          ),
+          body: temPerguntaSelecionada ? 
+           Questionario(
+            perguntas: _perguntas,
+            perguntaSelecionada: _perguntaSelecionada,
+            responder: _responder,
+           )
+           : Resultado(_pontuacaoTotal, _reiniciarQuestionario)
         ),
       );
   }
