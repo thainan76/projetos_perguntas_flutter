@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
+import './questao.dart';
+import './respostas.dart';
 
 void main() {
-  runApp(Perguntas());
+  runApp(PerguntasApp());
 }
 
-class PerguntaAppState extends State<PerguntaApp> {
+class _PerguntaAppState extends State<PerguntasApp> {
 
-  var perguntaSelecionada = 0;
+  var _perguntaSelecionada = 0;
 
-  void responder(){
+  void _responder(){
     
     setState( () {
-      perguntaSelecionada++;
+      _perguntaSelecionada++;
     });
-    
+
     print('Pergunta respondida!');
+
   }
 
 
@@ -23,10 +26,10 @@ class PerguntaAppState extends State<PerguntaApp> {
 
     final List<String> perguntas = [
       "Qual é a sua cor favorita?",
-      "Qual é o seu animal favorito?"
+      "Qual é o seu animal favorito?",
+      "Qual é a sua comida favorita?",
     ];
-
-
+      
       return MaterialApp(
         home: Scaffold(
           appBar: AppBar(
@@ -34,19 +37,10 @@ class PerguntaAppState extends State<PerguntaApp> {
           ),
           body: Column(
             children: <Widget>[
-              Text(perguntas[perguntaSelecionada]),
-              RaisedButton(
-                child: Text("Resposta 1:"),
-                onPressed: responder,  
-              ),
-              RaisedButton(
-                child: Text("Resposta 2:"),
-                onPressed: responder,  
-              ),
-              RaisedButton(
-                child: Text("Resposta 3:"),
-                onPressed: responder,  
-              ),
+              Questao(perguntas[_perguntaSelecionada]),
+              Respostas('Resposta 1', _responder),
+              Respostas('Resposta 2', _responder),
+              Respostas('Resposta 3', _responder),
             ],
           ),
         ),
@@ -55,10 +49,10 @@ class PerguntaAppState extends State<PerguntaApp> {
 
 }
 
-abstract class Perguntas extends StatefulWidget {
+class PerguntasApp extends StatefulWidget {
   
-  PerguntaAppState createState(){
-     return PerguntaAppState();
+  _PerguntaAppState createState(){
+     return _PerguntaAppState();
   }
 
 }
