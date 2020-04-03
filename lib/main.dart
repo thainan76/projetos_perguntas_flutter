@@ -54,7 +54,7 @@ class _PerguntaAppState extends State<PerguntasApp> {
               'texto': 'Cachorro', 'pontuacao': 10
             },
             {
-              'texto': 'Gato', 'pontuacao': 3
+              'texto': 'Dinoussauro', 'pontuacao': 3
             },
             {
               'texto': 'Camelo', 'pontuacao': 5
